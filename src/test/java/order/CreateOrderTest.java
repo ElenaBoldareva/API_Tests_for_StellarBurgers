@@ -73,7 +73,7 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Check status code of create order")
+    @DisplayName("Check status code of create order with wrong ingredients")
     public void createOrderWithWrongIngredientsTest() {
         String accessToken = userAPIHelper.createUser();
         List<String> ingredientIds = new ArrayList<>();
