@@ -29,18 +29,16 @@ public class ChangeUserTest {
         User user = UserUtils.getRandomUser();
         Response createResponse = userAPIHelper.createUser(user);
         User changedUser = UserUtils.getRandomUser();
-        String accessToken = createResponse.jsonPath().get("accessToken");
+        String accessToken = createResponse.path("accessToken");
         Response changeResponse = userAPIHelper.changeUser(changedUser, accessToken);
 
         changeResponse.then().assertThat().body("success", equalTo(true))
                 .and()
                 .statusCode(200);
-        String email = changeResponse.jsonPath().get("user.email");
-        String name = changeResponse.jsonPath().get("user.name");
+        String email = changeResponse.path("user.email");
+        String name = changeResponse.path("user.name");
 
-//        Assert.assertEquals(changedUser.getEmail(), email);
         Assert.assertThat(email, equalToIgnoringCase(changedUser.getEmail()));
-//        Assert.assertEquals(changedUser.getName(), name);
         Assert.assertThat(name, equalToIgnoringCase(changedUser.getName()));
 
         Response loginResponse = userAPIHelper.loginUser(changedUser);
@@ -48,7 +46,7 @@ public class ChangeUserTest {
                 .and()
                 .statusCode(200);
 
-        accessToken = loginResponse.jsonPath().get("accessToken");
+        accessToken = loginResponse.path("accessToken");
         userAPIHelper.deleteUser(accessToken);
     }
 
@@ -57,10 +55,10 @@ public class ChangeUserTest {
     public void changeAuthorizedUserWithExistingEmailTest() {
         User firstUser = UserUtils.getRandomUser();
         Response createFirstUserResponse = userAPIHelper.createUser(firstUser);
-        String firstUserAccessToken = createFirstUserResponse.jsonPath().get("accessToken");
+        String firstUserAccessToken = createFirstUserResponse.path("accessToken");
         User secondUser = UserUtils.getRandomUser();
         Response createSecondUserResponse = userAPIHelper.createUser(secondUser);
-        String secondUserAccessToken = createSecondUserResponse.jsonPath().get("accessToken");
+        String secondUserAccessToken = createSecondUserResponse.path("accessToken");
 
         firstUser.setEmail(secondUser.getEmail());
         Response changeResponse = userAPIHelper.changeUser(firstUser, firstUserAccessToken);
@@ -77,7 +75,7 @@ public class ChangeUserTest {
     public void changeUnauthorizedUserTest() {
         User user = UserUtils.getRandomUser();
         Response createResponse = userAPIHelper.createUser(user);
-        String accessToken = createResponse.jsonPath().get("accessToken");
+        String accessToken = createResponse.path("accessToken");
         User changedUser = UserUtils.getRandomUser();
         Response changeResponse = userAPIHelper.changeUser(changedUser, "");
         changeResponse.then().assertThat().body("success", equalTo(false))

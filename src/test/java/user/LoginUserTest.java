@@ -29,7 +29,7 @@ public class LoginUserTest {
         loginResponse.then().assertThat().body("success", equalTo(true))
                 .and()
                 .statusCode(200);
-        String accessToken = loginResponse.jsonPath().get("accessToken");
+        String accessToken = loginResponse.path("accessToken");
         userAPIHelper.deleteUser(accessToken);
     }
 
@@ -53,7 +53,7 @@ public class LoginUserTest {
         loginResponse.then().assertThat().body("success", equalTo(false))
                 .and()
                 .statusCode(401);
-        String accessToken = createResponse.jsonPath().get("accessToken");
+        String accessToken = createResponse.path("accessToken");
         userAPIHelper.deleteUser(accessToken);
     }
 }

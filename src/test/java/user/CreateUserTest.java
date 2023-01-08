@@ -28,7 +28,7 @@ public class CreateUserTest {
         response.then().assertThat().body("success", equalTo(true))
                 .and()
                 .statusCode(200);
-        String accessToken = response.jsonPath().get("accessToken");
+        String accessToken = response.path("accessToken");
         userAPIHelper.deleteUser(accessToken);
     }
 
@@ -41,7 +41,7 @@ public class CreateUserTest {
         createDoubleResponse.then().assertThat().body("success", equalTo(false))
                 .and()
                 .statusCode(403);
-        String accessToken = createResponse.jsonPath().get("accessToken");
+        String accessToken = createResponse.path("accessToken");
         userAPIHelper.deleteUser(accessToken);
     }
 
