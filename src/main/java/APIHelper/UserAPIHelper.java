@@ -2,6 +2,7 @@ package APIHelper;
 
 import io.restassured.response.Response;
 import pojo.User;
+import util.UserUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,12 @@ public class UserAPIHelper {
                         .when()
                         .post(REGISTER_URL);
         return response;
+    }
+
+    public String createUser() {
+        User user = UserUtils.getRandomUser();
+        Response response = createUser(user);
+        return response.path("accessToken");
     }
 
     public Response deleteUser(String token) {
